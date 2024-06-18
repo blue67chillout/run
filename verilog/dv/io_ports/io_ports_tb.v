@@ -26,9 +26,13 @@ module io_ports_tb;
 
 	wire gpio;
 	wire [37:0] mprj_io;
-	wire [7:0] mprj_io_0;
+	
+	wire [4:0] sum;
+	reg [5:0]ver;
+	assign mprj_io[37:32] = ver; 
+	
+	assign sum = mprj_io[4:0];
 
-	assign mprj_io_0 = mprj_io[7:0];
 	// assign mprj_io_0 = {mprj_io[8:4],mprj_io[2:0]};
 
 	assign mprj_io[3] = (CSB == 1'b1) ? 1'b1 : 1'bz;
@@ -160,20 +164,16 @@ module io_ports_tb;
 	end
 
 	initial begin
-	    // Observe Output pins [7:0]
-		wait(mprj_io_0 == 8'h01);
-		wait(mprj_io_0 == 8'h02);
-		wait(mprj_io_0 == 8'h03);
-		wait(mprj_io_0 == 8'h04);
-		wait(mprj_io_0 == 8'h05);
-		wait(mprj_io_0 == 8'h06);
-		wait(mprj_io_0 == 8'h07);
-		wait(mprj_io_0 == 8'h08);
-		wait(mprj_io_0 == 8'h09);
-		wait(mprj_io_0 == 8'h0A);   
-		wait(mprj_io_0 == 8'hFF);
-		wait(mprj_io_0 == 8'h00);
+
 		
+
+		wait(sum == 5'b00111); 
+		
+		//wait(sum == 5'b01110);
+		#5000;
+
+		//wait(mprj_io[37:32] == 6'h2B )
+
 		`ifdef GL
 	    	$display("Monitor: Test 1 Mega-Project IO (GL) Passed");
 		`else
@@ -265,3 +265,4 @@ module io_ports_tb;
 
 endmodule
 `default_nettype wire
+
